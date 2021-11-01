@@ -11,11 +11,14 @@ import numpy as np
 from PIL import Image
 import io
 
+import time
+
 class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
 
     def __init__(self, *args, **kwargs):
         # load the model
         try:
+            # tf.debugging.set_log_device_placement(True)
             self.model = tf.keras.models.load_model(kwargs['model'])
         except:
             print('Model not loaded properly')
@@ -23,6 +26,9 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
     def Infer(self, request, context):
         resultbatch = inferencedata_pb2.ResultBatch()
         input_batch_size = len(request.images)
+
+        ##time it
+        ts = time.time()
 
         # TODO: may want to create custom batch sizing here based on GPU and network
 
@@ -45,7 +51,9 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
         
         # pass it to model to process
         images_np = images_np * 1./255 ## rescales it for the model
+        te = time.time()
         logits = self.model.predict(images_np, batch_size = 64)  
+        
         prediction = np.argmax(logits, axis=1)
 
         # convert back to result type
@@ -54,6 +62,11 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
             result.id = i
             result.num = prediction[i]
 
+        ## time it
+        
+        print('time taken:', te-ts)
+
+        print('Kuch hua')
         return resultbatch
 
 def serve():
