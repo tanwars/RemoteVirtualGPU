@@ -7,6 +7,7 @@ import inferencedata_pb2_grpc
 
 import tensorflow as tf
 import numpy as np
+import tensorflow_hub as hub
 
 from PIL import Image
 import io
@@ -19,7 +20,7 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
         # load the model
         try:
             # tf.debugging.set_log_device_placement(True)
-            self.model = tf.keras.models.load_model(kwargs['model'])
+            self.model = tf.keras.models.load_model(kwargs['model'], custom_objects={'KerasLayer': hub.KerasLayer})
             images_np = np.random.randn(64, 224, 224, 3)
             self.model.predict(images_np, batch_size=64)
             print('server is running')
@@ -74,7 +75,7 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    inferencedata_pb2_grpc.add_RemoteInferenceServicer_to_server(RemoteInference(model = 'models/mobilenet_v2_1.0_224.h5'), server)
+    inferencedata_pb2_grpc.add_RemoteInferenceServicer_to_server(RemoteInference(model = 'models/resnet_v2_1.0_224.h5'), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     server.wait_for_termination()
