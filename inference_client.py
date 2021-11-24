@@ -14,8 +14,8 @@ import os
 import time
 import threading
 
-target_fps = 80
-batch_size = 2
+target_fps = 25
+batch_size = 1
 t_start = time.time()
 
 lock = threading.Lock()
@@ -38,7 +38,7 @@ def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
-    channel = grpc.insecure_channel('ec2-54-183-131-10.us-west-1.compute.amazonaws.com:50051')
+    channel = grpc.insecure_channel('localhost:50051')
     files = os.listdir('flower_photos_formatted/roses')
 
     for f in files:
