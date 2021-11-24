@@ -74,7 +74,7 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    inferencedata_pb2_grpc.add_RemoteInferenceServicer_to_server(RemoteInference(model = 'model.h5'), server)
+    inferencedata_pb2_grpc.add_RemoteInferenceServicer_to_server(RemoteInference(model = 'models/mobilenet_v2_1.0_224.h5'), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     server.wait_for_termination()
