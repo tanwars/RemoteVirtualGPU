@@ -24,6 +24,7 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
             images_np = np.random.randn(64, 224, 224, 3)
             self.model.predict(images_np, batch_size=64)
             print('server is running')
+            # print(self.model.summary())
         except Exception as e:
             print('Model not loaded properly')
             print(e)
@@ -61,13 +62,13 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
         logits = self.model.predict(images_np, batch_size = 64)  
         te = time.time()
         
-        prediction = np.argmax(logits, axis=1)
+        # prediction = np.argmax(logits, axis=1)
 
         # convert back to result type
         for i in range(input_batch_size):
             result = resultbatch.results.add()
             result.id = i
-            result.num = prediction[i]
+            result.num = i
 
         print('time taken:', te-ts)
 
@@ -75,7 +76,7 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    inferencedata_pb2_grpc.add_RemoteInferenceServicer_to_server(RemoteInference(model = 'models/resnet_v2_1.0_224.h5'), server)
+    inferencedata_pb2_grpc.add_RemoteInferenceServicer_to_server(RemoteInference(model = 'models/yolo_v3_model.h5'), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     server.wait_for_termination()
