@@ -12,50 +12,84 @@ import numpy as np
 import io
 import os
 import time
+import threading
+
+target_fps = 80
+batch_size = 2
+t_start = time.time()
+
+lock = threading.Lock()
+counter = 0
+
+f_contents = []
 
 def run():
+    global counter 
+
     def process_response(call_future):
-        print('received result')
+        global counter 
+        lock.acquire()
+        counter += len(call_future.result().results)
+        curr_val = counter
+        lock.release()
+        if curr_val % 10 == 0:
+            print('{}: {}'.format(time.time() - t_start, curr_val))
 
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
     channel = grpc.insecure_channel('ec2-54-183-131-10.us-west-1.compute.amazonaws.com:50051')
-    for i in range(1):
-        files = os.listdir('flower_photos_formatted/roses')[:16]
-        print(len(files))
+    files = os.listdir('flower_photos_formatted/roses')
+
+    for f in files:
+        with open(os.path.join('flower_photos_formatted/roses/', f), 'rb') as fp:
+            f_contents.append(fp.read())
+
+    sleep_time = 1. / target_fps
+
+    i = 0
+    total = 0
+    while True:
         imagebatch = inferencedata_pb2.ImageBatch()
 
-        st = time.time()
-        for i, f in enumerate(files):
+        if i >= len(files):
+            total += len(files)
+            i = 0
 
-            with open(os.path.join('flower_photos_formatted/roses/', f), 'rb') as fp:
+        for j in range(i,min(len(files), i+batch_size)):
+            imagepb = imagebatch.images.add()
+            imagepb.id = i + 1
+            imagepb.image_data = f_contents[j]
 
-                # img = Image.open(os.path.join('flower_photos/roses/', f))
-                # img_byte_arr = io.BytesIO()
-                # img.save(img_byte_arr, format=img.format)
-                # img_byte_arr = img_byte_arr.getvalue()
+            if batch_size > 1:
+                time.sleep(sleep_time * (batch_size - 1))
 
-                imagepb = imagebatch.images.add()
-                imagepb.id = i + 1
-                # imagepb.image_data = img_byte_arr
-                imagepb.image_data = fp.read()
+        i += min(batch_size, len(files) - i)
 
-        en = time.time()
-
-        print("Took {} seconds to create the image batch".format(en - st))
+        # print("Took {} seconds to create the image batch".format(en - st))
 
         # st = time.time()
         stub = inferencedata_pb2_grpc.RemoteInferenceStub(channel)
         call_future = stub.Infer.future(imagebatch)
         call_future.add_done_callback(process_response)
+
+        since = time.time() - t_start
+        if since > 20:
+            print("waiting for results")
+            lock.acquire()
+            num_results = counter
+            lock.release()
+            print("avg fps sustained: {}".format(counter / since))
+            break
+
+        time.sleep(sleep_time)
         # response = stub.Infer(imagebatch)
         # en = time.time()
 
-        print("Took {} seconds to receive the results".format(en - st))
+        # print("Took {} seconds to receive the results".format(en - st))
 
-    # print("Inference client received {}".format(response))
-    # print("Inference client received response of length {} and first item {}".format(len(response.results), response.results[0]))
+        # print("Inference client received {}".format(response))
+        # print("Inference client received response of length {} and first item {}".format(len(response.results), response.results[0]))
 
 if __name__ == '__main__':
     logging.basicConfig()
