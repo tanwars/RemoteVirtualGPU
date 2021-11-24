@@ -53,11 +53,11 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
         # pass it to model to process
         images_np = images_np * 1./255 ## rescales it for the model
 
-        with tf.device("GPU:0"):
-            images_tf = tf.convert_to_tensor(images_np, dtype = tf.float32)
+        # with tf.device("GPU:0"):
+        #     images_tf = tf.convert_to_tensor(images_np, dtype = tf.float32)
 
         ts = time.time()
-        logits = self.model.predict(images_tf, batch_size = 64)  
+        logits = self.model.predict(images_np, batch_size = 64)  
         te = time.time()
         
         prediction = np.argmax(logits, axis=1)
