@@ -3,6 +3,7 @@ from numpy import expand_dims
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.preprocessing.image import img_to_array
+from tensorflow.keras.preprocessing.image import smart_resize
 from matplotlib import pyplot
 from matplotlib.patches import Rectangle
  
@@ -118,6 +119,9 @@ def load_image_pixels(filename, shape):
 	# load the image with the required size
 	image = load_img(filename, target_size=shape)
 	# convert to numpy array
+	# image = smart_resize(image, (shape))
+	# print(image.shape)
+	# width, height, _ = image.shape
 	image = img_to_array(image)
 	# scale pixel values to [0, 1]
 	image = image.astype('float32')
@@ -168,15 +172,16 @@ def draw_boxes(filename, v_boxes, v_labels, v_scores):
 	pyplot.show()
 
 # load yolov3 model
-model = load_model('yolo_v3_model.h5')
+model = load_model('yolo_v3_model_300.h5')
 model.summary()
 # define the expected input shape for the model
-# input_w, input_h = 416, 416
-input_w, input_h = 224, 224
+input_w, input_h = 416, 416
+# input_w, input_h = 224, 224
 # define our new photo
 photo_filename = 'zebra_dir/zebra.jpg'
 # load and prepare image
 image, image_w, image_h = load_image_pixels(photo_filename, (input_w, input_h))
+print(image_w, image_h)
 # make prediction
 yhat = model.predict(image)
 # summarize the shape of the list of arrays
@@ -186,6 +191,8 @@ anchors = [[116,90, 156,198, 373,326], [30,61, 62,45, 59,119], [10,13, 16,30, 33
 # define the probability threshold for detected objects
 class_threshold = 0.6
 boxes = list()
+
+print('HERE -------------------------------- HERE ')
 for i in range(len(yhat)):
 	# decode the output of the network
 	boxes += decode_netout(yhat[i][0], anchors[i], class_threshold, input_h, input_w)
@@ -208,6 +215,6 @@ labels = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", 
 v_boxes, v_labels, v_scores = get_boxes(boxes, labels, class_threshold)
 # summarize what we found
 for i in range(len(v_boxes)):
-	print(v_labels[i], v_scores[i])
+	print(v_boxes[i].xmin, v_labels[i], v_scores[i])
 # draw what we found
 draw_boxes(photo_filename, v_boxes, v_labels, v_scores)

@@ -24,13 +24,13 @@ def _conv_block(inp, convs, skip=True):
 				   name='conv_' + str(conv['layer_idx']),
 				   use_bias=False if conv['bnorm'] else True)(x)
 		if conv['bnorm']: x = BatchNormalization(epsilon=0.001, name='bnorm_' + str(conv['layer_idx']))(x)
-		# if conv['leaky']: x = LeakyReLU(alpha=0.1, name='leaky_' + str(conv['layer_idx']))(x)
-		if conv['leaky']: x = ReLU(name='leaky_' + str(conv['layer_idx']))(x)
+		if conv['leaky']: x = LeakyReLU(alpha=0.1, name='leaky_' + str(conv['layer_idx']))(x)
+		# if conv['leaky']: x = ReLU(name='leaky_' + str(conv['layer_idx']))(x)
 	return add([skip_connection, x]) if skip else x
  
 def make_yolov3_model():
-	input_image = Input(shape=(224, 224, 3), batch_size = 1)
-	# input_image = Input(shape=(224, 224, 3))
+	# input_image = Input(shape=(224, 224, 3), batch_size = 1)
+	input_image = Input(shape=(None, None, 3))
 	# Layer  0 => 4
 	x = _conv_block(input_image, [{'filter': 32, 'kernel': 3, 'stride': 1, 'bnorm': True, 'leaky': True, 'layer_idx': 0},
 								  {'filter': 64, 'kernel': 3, 'stride': 2, 'bnorm': True, 'leaky': True, 'layer_idx': 1},
@@ -162,5 +162,5 @@ weight_reader = WeightReader('yolov3.weights')
 # set the model weights into the model
 weight_reader.load_weights(model)
 # save the model to file
-model.save('yolo_v3_model.h5')
+model.save('yolo_v3_model_variable.h5')
 model.summary()

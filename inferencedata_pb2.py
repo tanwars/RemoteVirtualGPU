@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\033io.grpc.examples.helloworldB\017HelloWorldProtoP\001\242\002\003HLW',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x13inferencedata.proto\x12\rinferencedata\"\'\n\x05Image\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x12\n\nimage_data\x18\x02 \x01(\x0c\"2\n\nImageBatch\x12$\n\x06images\x18\x01 \x03(\x0b\x32\x14.inferencedata.Image\"m\n\tResultBox\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04xmin\x18\x03 \x01(\x02\x12\x0c\n\x04ymin\x18\x04 \x01(\x02\x12\x0c\n\x04xmax\x18\x05 \x01(\x02\x12\x0c\n\x04ymax\x18\x06 \x01(\x02\x12\r\n\x05label\x18\x07 \x01(\x05\x12\r\n\x05score\x18\x08 \x01(\x02\"=\n\x06Result\x12\n\n\x02id\x18\x01 \x01(\x05\x12\'\n\x05\x62oxes\x18\x02 \x03(\x0b\x32\x18.inferencedata.ResultBox\"5\n\x0bResultBatch\x12&\n\x07results\x18\x01 \x03(\x0b\x32\x15.inferencedata.Result2S\n\x0fRemoteInference\x12@\n\x05Infer\x12\x19.inferencedata.ImageBatch\x1a\x1a.inferencedata.ResultBatch\"\x00\x42\x36\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3'
+  serialized_pb=b'\n\x13inferencedata.proto\x12\rinferencedata\"\'\n\x05Image\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x12\n\nimage_data\x18\x02 \x01(\x0c\"2\n\nImageBatch\x12$\n\x06images\x18\x01 \x03(\x0b\x32\x14.inferencedata.Image\"m\n\tResultBox\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04xmin\x18\x03 \x01(\x02\x12\x0c\n\x04ymin\x18\x04 \x01(\x02\x12\x0c\n\x04xmax\x18\x05 \x01(\x02\x12\x0c\n\x04ymax\x18\x06 \x01(\x02\x12\r\n\x05label\x18\x07 \x01(\t\x12\r\n\x05score\x18\x08 \x01(\x02\"=\n\x06Result\x12\n\n\x02id\x18\x01 \x01(\x05\x12\'\n\x05\x62oxes\x18\x02 \x03(\x0b\x32\x18.inferencedata.ResultBox\"5\n\x0bResultBatch\x12&\n\x07results\x18\x01 \x03(\x0b\x32\x15.inferencedata.Result2S\n\x0fRemoteInference\x12@\n\x05Infer\x12\x19.inferencedata.ImageBatch\x1a\x1a.inferencedata.ResultBatch\"\x00\x42\x36\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3'
 )
 
 
@@ -141,8 +141,8 @@ _RESULTBOX = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='label', full_name='inferencedata.ResultBox.label', index=5,
-      number=7, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
