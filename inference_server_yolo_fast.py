@@ -92,10 +92,10 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
             result.id = i
             for j in range(v_boxes.shape[0]):
                 f_box = result.boxes.add()
-                f_box.xmin = v_boxes[j,0]
-                f_box.xmax = v_boxes[j,1]
-                f_box.ymin = v_boxes[j,2]
-                f_box.ymax = v_boxes[j,3]
+                f_box.xmin = v_boxes[j,1]
+                f_box.xmax = v_boxes[j,3]
+                f_box.ymin = v_boxes[j,0]
+                f_box.ymax = v_boxes[j,2]
                 f_box.label = v_labels[j]
                 f_box.score = v_scores[j]
                 f_box.id = j
