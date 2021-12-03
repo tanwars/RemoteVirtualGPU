@@ -20,19 +20,9 @@ message ImageBatch {
 	repeated Image images = 1;
 }
 
-message ResultBox {
-	int32 id = 1;
-	float xmin = 3;
-	float ymin = 4;
-	float xmax = 5;
-	float ymax = 6;
-	int32 label = 7;
-	float score = 8;
-}
-
 message Result {
 	int32 id = 1;
-	repeated ResultBox boxes = 2;
+	int32 num = 2;
 }
 
 message ResultBatch {

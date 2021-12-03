@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\033io.grpc.examples.helloworldB\017HelloWorldProtoP\001\242\002\003HLW',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x13inferencedata.proto\x12\rinferencedata\"\'\n\x05Image\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x12\n\nimage_data\x18\x02 \x01(\x0c\"2\n\nImageBatch\x12$\n\x06images\x18\x01 \x03(\x0b\x32\x14.inferencedata.Image\"!\n\x06Result\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0b\n\x03num\x18\x02 \x01(\x05\"5\n\x0bResultBatch\x12&\n\x07results\x18\x01 \x03(\x0b\x32\x15.inferencedata.Result2S\n\x0fRemoteInference\x12@\n\x05Infer\x12\x19.inferencedata.ImageBatch\x1a\x1a.inferencedata.ResultBatch\"\x00\x42\x36\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3'
+  serialized_pb=b'\n\x13inferencedata.proto\x12\rinferencedata\"\'\n\x05Image\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x12\n\nimage_data\x18\x02 \x01(\x0c\"2\n\nImageBatch\x12$\n\x06images\x18\x01 \x03(\x0b\x32\x14.inferencedata.Image\"m\n\tResultBox\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04xmin\x18\x03 \x01(\x02\x12\x0c\n\x04ymin\x18\x04 \x01(\x02\x12\x0c\n\x04xmax\x18\x05 \x01(\x02\x12\x0c\n\x04ymax\x18\x06 \x01(\x02\x12\r\n\x05label\x18\x07 \x01(\x05\x12\r\n\x05score\x18\x08 \x01(\x02\"=\n\x06Result\x12\n\n\x02id\x18\x01 \x01(\x05\x12\'\n\x05\x62oxes\x18\x02 \x03(\x0b\x32\x18.inferencedata.ResultBox\"5\n\x0bResultBatch\x12&\n\x07results\x18\x01 \x03(\x0b\x32\x15.inferencedata.Result2S\n\x0fRemoteInference\x12@\n\x05Infer\x12\x19.inferencedata.ImageBatch\x1a\x1a.inferencedata.ResultBatch\"\x00\x42\x36\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3'
 )
 
 
@@ -96,25 +96,60 @@ _IMAGEBATCH = _descriptor.Descriptor(
 )
 
 
-_RESULT = _descriptor.Descriptor(
-  name='Result',
-  full_name='inferencedata.Result',
+_RESULTBOX = _descriptor.Descriptor(
+  name='ResultBox',
+  full_name='inferencedata.ResultBox',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='id', full_name='inferencedata.Result.id', index=0,
+      name='id', full_name='inferencedata.ResultBox.id', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='num', full_name='inferencedata.Result.num', index=1,
-      number=2, type=5, cpp_type=1, label=1,
+      name='xmin', full_name='inferencedata.ResultBox.xmin', index=1,
+      number=3, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='ymin', full_name='inferencedata.ResultBox.ymin', index=2,
+      number=4, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='xmax', full_name='inferencedata.ResultBox.xmax', index=3,
+      number=5, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='ymax', full_name='inferencedata.ResultBox.ymax', index=4,
+      number=6, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='label', full_name='inferencedata.ResultBox.label', index=5,
+      number=7, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='score', full_name='inferencedata.ResultBox.score', index=6,
+      number=8, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -131,7 +166,46 @@ _RESULT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=131,
-  serialized_end=164,
+  serialized_end=240,
+)
+
+
+_RESULT = _descriptor.Descriptor(
+  name='Result',
+  full_name='inferencedata.Result',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='inferencedata.Result.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='boxes', full_name='inferencedata.Result.boxes', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=242,
+  serialized_end=303,
 )
 
 
@@ -162,14 +236,16 @@ _RESULTBATCH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=166,
-  serialized_end=219,
+  serialized_start=305,
+  serialized_end=358,
 )
 
 _IMAGEBATCH.fields_by_name['images'].message_type = _IMAGE
+_RESULT.fields_by_name['boxes'].message_type = _RESULTBOX
 _RESULTBATCH.fields_by_name['results'].message_type = _RESULT
 DESCRIPTOR.message_types_by_name['Image'] = _IMAGE
 DESCRIPTOR.message_types_by_name['ImageBatch'] = _IMAGEBATCH
+DESCRIPTOR.message_types_by_name['ResultBox'] = _RESULTBOX
 DESCRIPTOR.message_types_by_name['Result'] = _RESULT
 DESCRIPTOR.message_types_by_name['ResultBatch'] = _RESULTBATCH
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -187,6 +263,13 @@ ImageBatch = _reflection.GeneratedProtocolMessageType('ImageBatch', (_message.Me
   # @@protoc_insertion_point(class_scope:inferencedata.ImageBatch)
   })
 _sym_db.RegisterMessage(ImageBatch)
+
+ResultBox = _reflection.GeneratedProtocolMessageType('ResultBox', (_message.Message,), {
+  'DESCRIPTOR' : _RESULTBOX,
+  '__module__' : 'inferencedata_pb2'
+  # @@protoc_insertion_point(class_scope:inferencedata.ResultBox)
+  })
+_sym_db.RegisterMessage(ResultBox)
 
 Result = _reflection.GeneratedProtocolMessageType('Result', (_message.Message,), {
   'DESCRIPTOR' : _RESULT,
@@ -212,8 +295,8 @@ _REMOTEINFERENCE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=221,
-  serialized_end=304,
+  serialized_start=360,
+  serialized_end=443,
   methods=[
   _descriptor.MethodDescriptor(
     name='Infer',
