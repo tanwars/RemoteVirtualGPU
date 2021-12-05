@@ -17,7 +17,7 @@ def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
-    with grpc.insecure_channel('ec2-54-215-143-22.us-west-1.compute.amazonaws.com:50051') as channel:
+    with grpc.insecure_channel('ec2-54-215-143-22.us-west-1.compute.amazonaws.com:50052') as channel:
         img = Image.open('marguerite-729510__480.jpg')
         img = img.resize((224, 224))
         img_byte_arr = io.BytesIO()

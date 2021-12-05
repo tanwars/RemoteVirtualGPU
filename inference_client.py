@@ -16,7 +16,7 @@ import threading
 
 target_fps = 25
 batch_size = 1
-t_start = time.time()
+t_start = time.perf_counter()
 
 lock = threading.Lock()
 counter = 0
@@ -33,12 +33,13 @@ def run():
         curr_val = counter
         lock.release()
         if curr_val % 10 == 0:
-            print('{}: {}'.format(time.time() - t_start, curr_val))
+            print('{}: {}'.format(time.perf_counter() - t_start, curr_val))
 
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
-    channel = grpc.insecure_channel('localhost:50051')
+    # channel = grpc.insecure_channel('localhost:50051')
+    channel = grpc.insecure_channel('ec2-13-57-32-117.us-west-1.compute.amazonaws.com:50051')
     files = os.listdir('flower_photos_formatted/roses')
 
     for f in files:
@@ -73,14 +74,14 @@ def run():
         call_future = stub.Infer.future(imagebatch)
         call_future.add_done_callback(process_response)
 
-        since = time.time() - t_start
+        since = time.perf_counter() - t_start
         if since > 20:
             print("waiting for results")
             lock.acquire()
             num_results = counter
             lock.release()
             print("avg fps sustained: {}".format(counter / since))
-            break
+            # break
 
         time.sleep(sleep_time)
         # response = stub.Infer(imagebatch)
