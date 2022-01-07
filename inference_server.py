@@ -58,9 +58,9 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
         # with tf.device("GPU:0"):
         #     images_tf = tf.convert_to_tensor(images_np, dtype = tf.float32)
 
-        ts = time.time()
+        ts = time.perf_counter()
         logits = self.model.predict(images_np, batch_size = 64)  
-        te = time.time()
+        te = time.perf_counter()
         
         # prediction = np.argmax(logits, axis=1)
 
@@ -68,7 +68,7 @@ class RemoteInference(inferencedata_pb2_grpc.RemoteInferenceServicer):
         for i in range(input_batch_size):
             result = resultbatch.results.add()
             result.id = i
-            result.num = i
+            # result.num = i
 
         print('time taken:', te-ts)
 
